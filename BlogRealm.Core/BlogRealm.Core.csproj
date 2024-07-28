@@ -41,7 +41,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Models\About.cs" />
+    <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\Blog.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Newsletter.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SocialMediaAccount.cs" />
+    <Compile Include="Models\SocialMediaPlatform.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IAboutRepository.cs" />
+    <Compile Include="Repositories\IAuthorRepository.cs" />
+    <Compile Include="Repositories\IBlogRepository.cs" />
+    <Compile Include="Repositories\ICategoryRepository.cs" />
+    <Compile Include="Repositories\ICommentRepository.cs" />
+    <Compile Include="Repositories\IContactRepository.cs" />
+    <Compile Include="Repositories\INewsletterRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\IRoleRepository.cs" />
+    <Compile Include="Repositories\ISocialMediaAccountRepository.cs" />
+    <Compile Include="Repositories\ISocialMediaPlatformRepository.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Services\IAboutService.cs" />
+    <Compile Include="Services\IAuthorService.cs" />
+    <Compile Include="Services\IBlogService.cs" />
+    <Compile Include="Services\ICategoryService.cs" />
+    <Compile Include="Services\ICommentService.cs" />
+    <Compile Include="Services\IContactService.cs" />
+    <Compile Include="Services\INewsletterService.cs" />
+    <Compile Include="Services\IRoleService.cs" />
+    <Compile Include="Services\ISocialMediaAccountService.cs" />
+    <Compile Include="Services\ISocialMediaPlatformService.cs" />
+    <Compile Include="Services\IUserService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
