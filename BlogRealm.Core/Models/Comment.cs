@@ -6,7 +6,7 @@ namespace BlogRealm.Core.Models
     {
         public int Id { get; set; }
         public int BlogId { get; set; }
-        public string Username { get; set; }
+        public string Fullname { get; set; }
         public string Text { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public virtual Blog Blog { get; set; }

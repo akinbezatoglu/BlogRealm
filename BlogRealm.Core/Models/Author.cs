@@ -7,9 +7,7 @@ namespace BlogRealm.Core.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public string Username { get; set; }
         public string Fullname { get; set; }
-        public string Password { get; set; }
         public string Image { get; set; }
         public string About { get; set; }
         public virtual User User { get; set; }
