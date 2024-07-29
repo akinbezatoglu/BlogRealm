@@ -64,9 +64,9 @@
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Context\BlogRealmDbContext.cs" />
     <Compile Include="Initializer\BlogRealmDbInitializer.cs" />
-    <Compile Include="Migrations\202407281955375_InitialCreate.cs" />
-    <Compile Include="Migrations\202407281955375_InitialCreate.Designer.cs">
-      <DependentUpon>202407281955375_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202407290931468_InitialCreate.cs" />
+    <Compile Include="Migrations\202407290931468_InitialCreate.Designer.cs">
+      <DependentUpon>202407290931468_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,8 +98,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202407281955375_InitialCreate.resx">
-      <DependentUpon>202407281955375_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202407290931468_InitialCreate.resx">
+      <DependentUpon>202407290931468_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

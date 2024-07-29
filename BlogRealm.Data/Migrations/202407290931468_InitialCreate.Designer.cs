@@ -13,7 +13,7 @@ namespace BlogRealm.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202407281955375_InitialCreate"; }
+            get { return "202407290931468_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

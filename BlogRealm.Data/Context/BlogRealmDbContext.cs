@@ -22,7 +22,7 @@ namespace BlogRealm.Data.Context
         public BlogRealmDbContext() : base("name=BlogRealmDbContext")
         {
             Database.SetInitializer<BlogRealmDbContext>(new BlogRealmDbInitializer());
-            Database.Initialize(true);
+            Database.Initialize(false);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

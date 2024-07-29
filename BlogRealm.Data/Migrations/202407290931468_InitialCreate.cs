@@ -63,7 +63,7 @@
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 250),
                         About = c.String(nullable: false, maxLength: 850),
-                        ColorHexCode = c.String(),
+                        ColorHexCode = c.String(nullable: false, maxLength: 10),
                     })
                 .PrimaryKey(t => t.Id);
             
