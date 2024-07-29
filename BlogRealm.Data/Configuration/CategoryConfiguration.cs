@@ -17,6 +17,10 @@ namespace BlogRealm.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(850);
 
+            categoryConfig.Property(c => c.ColorHexCode)
+                .IsRequired()
+                .HasMaxLength(10);
+
             categoryConfig.HasMany(c => c.Blogs)
                 .WithRequired(b => b.Category)
                 .HasForeignKey(b => b.CategoryId)
