@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+
+<script>
+    // Function to generate random colors
+    function getRandomColor(opacity) {
+        const opacities = { low: 0.2, mid: 0.5, high: 1 };
+
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+
+        const color = {
+            low: `rgba(${r}, ${g}, ${b}, ${opacities.low})`,
+            mid: `rgba(${r}, ${g}, ${b}, ${opacities.mid})`,
+            high: `rgba(${r}, ${g}, ${b}, ${opacities.high})`
+        };
+
+        return color;
+    }
+
+    // Function to generate multiple colors
+    function generateColors(count) {
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+            colors.push(getRandomColor());
+        }
+        return colors;
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("CategoryChart", "Home")',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function (data) {
+                Chart.register(ChartDataLabels);
+
+                const labels = data.map(category => category.Name);
+                const values = data.map(category => category.BlogsCount);
+
+                const maxValue = Math.max(...values);
+
+                const colorArray = generateColors(data.length);
+
+                const lowOpacityColor = colorArray.map(c => c.low);
+                const midOpacityColor = colorArray.map(c => c.mid);
+
+                const config = {
+                    type: "polarArea",
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: midOpacityColor,
+                            datalabels: {
+                                display: false,
+                            },
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        layout: {
+                            padding: 40
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: maxValue,
+                                angleLines: {
+                                    display: true
+                                },
+                                ticks: {
+                                    display: true
+                                },
+                                pointLabels: {
+                                    display: true
+                                }
+                            }
+                        },
+                        scale: {
+                            min: 0,
+                            max: 100
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                title: {
+                                    display: true,
+                                    text: `Categories (${values.length}) - Number of Blogs`,
+                                    padding: 10,
+                                    font: {
+                                        size: 20
+                                    }
+                                },
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: 'rectRounded'
+                                }
+                            }
+                        }
+                    }
+                }
+
+                new Chart('categoryGraph', config);
+            },
+            error: function (xhr, status, error) {
+                $('#categoryGraphErrorMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("AuthorChart", "Home")',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function (data) {
+                Chart.register(ChartDataLabels);
+
+                const labels = data.map(author => author.Name);
+                const values = data.map(author => author.BlogsCount);
+
+                const maxValue = Math.max(...values);
+
+                const colorArray = generateColors(data.length);
+
+                const lowOpacityColor = colorArray.map(c => c.low);
+                const midOpacityColor = colorArray.map(c => c.mid);
+
+                const config = {
+                    type: "polarArea",
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: midOpacityColor,
+                            datalabels: {
+                                display: false,
+                            },
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        layout: {
+                            padding: 40
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: maxValue,
+                                angleLines: {
+                                    display: true
+                                },
+                                ticks: {
+                                    display: true
+                                },
+                                pointLabels: {
+                                    display: true
+                                }
+                            }
+                        },
+                        scale: {
+                            min: 0,
+                            max: 100
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                title: {
+                                    display: true,
+                                    text: `Authors (${values.length}) - Number of Blogs`,
+                                    padding: 10,
+                                    font: {
+                                        size: 20
+                                    }
+                                },
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: 'rectRounded'
+                                }
+                            }
+                        }
+                    }
+                }
+
+                new Chart('authorGraph', config);
+            },
+            error: function (xhr, status, error) {
+                $('#authorGraphErrorMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+            }
+        });
+    });
+</script>
+
+<div class="container mt-1">
+    <div class="justify-content-center">
+        <div class="row">
+            <div class="col">
+                <canvas id="categoryGraph"></canvas>
+                <div id="categoryGraphErrorMessage" class="alert mt-3 d-none"></div>
+            </div>
+            <div class="col">
+                <canvas id="authorGraph"></canvas>
+                <div id="authorGraphErrorMessage" class="alert mt-3 d-none"></div>
+            </div>
+        </div>
+    </div>
+</div>

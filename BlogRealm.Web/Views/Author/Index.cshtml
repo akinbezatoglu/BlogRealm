@@ -1,0 +1,36 @@
+﻿@model BlogRealm.Web.DTO.AuthorDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-5 justify-content-center">
+    <div class="col-md-5 text-center">
+        <h2>@Model.Name</h2>
+        <p>@Model.About</p>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-5 text-center">
+        <p class="mt-5">
+            <a href="@Model.FacebookUrl" class="p-3"><span class="icon-facebook"></span></a>
+            <a href="@Model.InstagramUrl" class="p-3"><span class="icon-instagram"></span></a>
+            <a href="@Model.TwitterUrl" class="p-3"><span class="icon-twitter"></span></a>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+
+    @if (Model.Blogs != null && Model.Blogs.Any())
+    {
+        foreach (var blog in Model.Blogs)
+        {
+            <div class="col-md-6 col-lg-4 mb-5 text-center">
+                <img src="@blog.Image" alt="Image" class="w-50 mb-4">
+                <a href="@blog.Url" class="p-3"><h2 class="mb-3 h5">@blog.Title</h2></a>
+                <p>@blog.ContentPreview</p>
+            </div>
+        }
+    }
+
+</div>

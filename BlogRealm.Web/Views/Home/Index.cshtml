@@ -1,3 +1,26 @@
-﻿@{
-    ViewBag.Title = "Home";
+﻿@model PagedList.IPagedList<BlogRealm.Web.DTO.BlogSmallDTO>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<div id="featuredContainer"></div>
+<script>
+    $(document).ready(function() {
+        $("#featuredContainer").load("@Url.Action("RecentBlogs", "Blog")");
+    });
+</script>
+
+<div id="blogsContainer">
+    @Html.Partial("~/Views/Blog/BlogList.cshtml", Model)
+</div>
+
+<div id="featuredByCategoryContainer"></div>
+<script>
+    $(document).ready(function() {
+        $("#featuredByCategoryContainer").load("@Url.Action("RecentBlogsByCategory", "Blog")");
+    });
+</script>

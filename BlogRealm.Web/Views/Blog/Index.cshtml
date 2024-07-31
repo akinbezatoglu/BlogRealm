@@ -1,0 +1,149 @@
+﻿@model BlogRealm.Web.DTO.BlogDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('@Model.Image');">
+    <div class="container">
+        <div class="row same-height justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+                    <span class="post-category text-white bg-success mb-3">@Model.Category.Name</span>
+                    <h1 class="mb-4"><a>@Model.Title</a></h1>
+                    <div class="post-meta align-items-center text-center">
+                        <figure class="author-figure mb-0 mr-3 d-inline-block"><img src="@Model.Author.Image" alt="Image" class="img-fluid"></figure>
+                        <span class="d-inline-block mt-1">By <a class="text-white" href="@Model.Author.Url" target="_blank" rel="noopener noreferrer">@Model.Author.Name</a></span>
+                        <span>&nbsp;-&nbsp; @Model.Date.Date.ToString("MMMM dd, yyyy")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="site-section py-lg">
+    <div class="container">
+
+        <div class="row blog-entries element-animate">
+
+            <div class="col-md-12 col-lg-8 main-content">
+
+                <div class="post-content-body">@Html.Raw(Model.Content)</div>
+
+                <div class="pt-5">
+                    <h3 class="mb-5">@Model.Comments.Count Comments</h3>
+                    <ul id="comments" class="comment-list">
+
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <li class="comment">
+                                <div class="vcard">
+                                    <img src="/miniblog/images/person_1.jpg" alt="Image placeholder">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>@comment.Username</h3>
+                                    <div class="meta">@comment.CreatedDateTime.ToString("MMMM d, yyyy 'at' h:mmtt").ToLower()</div>
+                                    <p>@comment.Text</p>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                    <!-- END comment-list -->
+
+                    <div id="reply" class="comment-form-wrap pt-5"></div>
+
+                    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                            var blogId = '@Model.Id';
+                            var url = '@Url.Action("Reply", "Comment")' + '/' + blogId;
+                            $("#reply").load(url);
+                        });
+                    </script>
+
+                </div>
+            </div>
+
+            <!-- END main-content -->
+
+            <div class="col-md-12 col-lg-4 sidebar">
+                <!-- END sidebar-box -->
+                <div class="sidebar-box">
+                    <div class="bio text-center">
+                        <img src="@Model.Author.Image" alt="Image Placeholder" class="img-fluid mb-5">
+                        <div class="bio-body">
+                            <h2>@Model.Author.Name</h2>
+                            <p class="mb-4">@Model.Author.About</p>
+                            <p><a href="@Model.AuthorUrl" class="btn btn-primary btn-sm rounded px-4 py-2">Read my bio</a></p>
+                            <p class="social">
+                                <a href="@Model.Author.FacebookUrl" class="p-2"><span class="fa fa-facebook"></span></a>
+                                <a href="@Model.Author.TwitterUrl" class="p-2"><span class="fa fa-twitter"></span></a>
+                                <a href="@Model.Author.InstagramUrl" class="p-2"><span class="fa fa-instagram"></span></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END sidebar-box -->
+                <div class="sidebar-box">
+                    <h3 class="heading">@Model.Author.Name's Recent Posts</h3>
+                    <div class="post-entry-sidebar">
+                        <ul>
+                            @if (Model.Author.Blogs.Count > 3)
+                            {
+                                foreach (var blog in Model.Author.Blogs.OrderByDescending(b => b.Date).Take(3))
+                                {
+                                    <li>
+                                        <a href="">
+                                            <img src="@blog.Image" alt="Image placeholder" class="mr-4">
+                                            <div class="text">
+                                                <h4>@blog.Title</h4>
+                                                <div class="post-meta">
+                                                    <span class="mr-2">@blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                               foreach (var blog in Model.Author.Blogs.OrderByDescending(b => b.Date))
+                               {
+                                   <li>
+                                       <a href="">
+                                           <img src="@blog.Image" alt="Image placeholder" class="mr-4">
+                                           <div class="text">
+                                               <h4>@blog.Title</h4>
+                                               <div class="post-meta">
+                                                   <span class="mr-2">@blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                                               </div>
+                                           </div>
+                                       </a>
+                                   </li>
+                               }
+                            
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                <!-- END sidebar-box -->
+
+                <div class="sidebar-box">
+                    <h3 class="heading">@Model.Author.Name's Top Categories</h3>
+                    <ul class="categories">
+                        @foreach (var category in Model.Author.Blogs.Select(b => b.Category).Distinct().OrderByDescending(c => c.Blogs.Count).ToList())
+                        {
+                            <li><a href="@category.Url">@category.Name <span>(@category.Blogs.Count)</span></a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <!-- END sidebar -->
+
+        </div>
+    </div>
+</section>

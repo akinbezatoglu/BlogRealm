@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BlogRealm.Web.DTO.BlogSmallDTO>
+
+@if (Model != null && Model.Any())
+{
+    <div class="site-section bg-light">
+        <div class="container">
+
+            <div class="row align-items-stretch retro-layout">
+
+                <div class="col-md-5 order-md-2">
+
+                    @foreach (BlogRealm.Web.DTO.BlogSmallDTO blog in Model.Take(1))
+                    {
+                        <a href="@blog.Url" class="hentry img-1 h-100 gradient" style="background-image: url('@blog.Image');">
+                            <span class="post-category text-white bg-danger">@blog.Category.Name</span>
+                            <div class="text">
+                                <h2>@blog.Title</h2>
+                                <span>&nbsp;-&nbsp; @blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                        </a>
+                    }
+
+                </div>
+
+                <div class="col-md-7">
+
+                    @foreach (BlogRealm.Web.DTO.BlogSmallDTO blog in Model.Skip(1).Take(1))
+                    {
+                        <a href="@blog.Url" class="hentry img-2 v-height mb30 gradient" style="background-image: url('@blog.Image');">
+                            <span class="post-category text-white bg-success">@blog.Category.Name</span>
+                            <div class="text text-sm">
+                                <h2>@blog.Title</h2>
+                                <span>&nbsp;-&nbsp; @blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                        </a>
+                    }
+
+                <div class="two-col d-block d-md-flex">
+
+                    @foreach (BlogRealm.Web.DTO.BlogSmallDTO blog in Model.Skip(2).Take(1))
+                    {
+                        <a href="@blog.Url" class="hentry v-height img-2 gradient" style="background-image: url('@blog.Image');">
+                            <span class="post-category text-white bg-primary">@blog.Category.Name</span>
+                            <div class="text text-sm">
+                                <h2>@blog.Title</h2>
+                                <span>&nbsp;-&nbsp; @blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                        </a>
+                    }
+
+                    @foreach (BlogRealm.Web.DTO.BlogSmallDTO blog in Model.Skip(3))
+                    {
+                        <a href="@blog.Url" class="hentry v-height img-2 ml-auto gradient" style="background-image: url('@blog.Image');">
+                            <span class="post-category text-white bg-warning">@blog.Category.Name</span>
+                            <div class="text text-sm">
+                                <h2>@blog.Title</h2>
+                                <span>&nbsp;-&nbsp; @blog.Date.Date.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                        </a>
+                    }
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,6 @@
+﻿@model IEnumerable<BlogRealm.Web.DTO.CategoryDTO>
+
+@foreach (var category in Model)
+{
+    <li><a href="@category.Url">@category.Name</a></li>
+}

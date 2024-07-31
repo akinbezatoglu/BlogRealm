@@ -19,6 +19,7 @@ namespace BlogRealm.Core.Repositories
         Task<IEnumerable<Blog>> GetAllWithAuthorByCategoryIdAsync(int categoryId);
 
         IEnumerable<IGrouping<int, Blog>> GroupByCategoryId(IEnumerable<Blog> blogs);
+        IEnumerable<IGrouping<int, Blog>> GroupByAuthorId(IEnumerable<Blog> blogs);
         IEnumerable<Blog> SelectFirstDescending(IEnumerable<IGrouping<int, Blog>> groupedBlogs);
         IEnumerable<Blog> OrderByDescendingByDate(IEnumerable<Blog> blogs);
     }

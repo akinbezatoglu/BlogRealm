@@ -1,0 +1,16 @@
+﻿@model IEnumerable<BlogRealm.Web.DTO.CategoryDTO>
+
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="sidebar-box">
+    <h3 class="heading">Categories</h3>
+    <ul class="categories">
+        @foreach (var category in Model)
+        {
+            <li><a href="@category.Url">@category.Name <span>@category.Blogs.Count</span></a></li>
+        }
+    </ul>
+</div>

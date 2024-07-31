@@ -74,6 +74,11 @@ namespace BlogRealm.Data.Repositories
             return blogs.GroupBy(b => b.CategoryId);
         }
 
+        public IEnumerable<IGrouping<int, Blog>> GroupByAuthorId(IEnumerable<Blog> blogs)
+        {
+            return blogs.GroupBy(b => b.AuthorId);
+        }
+
         public IEnumerable<Blog> OrderByDescendingByDate(IEnumerable<Blog> blogs)
         {
             return blogs.OrderByDescending(b => b.Date);

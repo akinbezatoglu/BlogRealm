@@ -1,0 +1,73 @@
+﻿@model BlogRealm.Web.Areas.Admin.DTO.BlogCommentsAdminDTO
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('body').on('click', '[id^=deleteCommentButton-]', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('id').split('-')[1];
+            var url = '@Url.Action("Delete", "Comment")' + '/' + id;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#commentDeleteResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    if (response.success) {
+                        $(`tr[data-cmt-id="${id}"]`).remove(); // Remove the comment row from the table
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#commentDeleteResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
+<h2>Comments: @Model.Title</h2>
+
+<div id="commentDeleteResponseMessage" class="alert mt-3 d-none"></div>
+
+<div class="h-100 align-items-center justify-content-center">
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <th>Commented Time</th>
+            <th>Username</th>
+            <th>Comment</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var comment in Model.Comments)
+        {
+            <tr data-cmt-id="@comment.Id">
+                <td>@comment.Id</td>
+                <td class="meta">@comment.CreatedDateTime.ToString("MMMM d, yyyy 'at' h:mmtt")</td>
+                <td>@comment.Username</td>
+                <td>@comment.Text</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cogs"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button id="deleteCommentButton-@comment.Id" class="dropdown-item pt-2 text-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

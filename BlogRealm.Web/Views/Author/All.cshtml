@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BlogRealm.Web.DTO.AuthorDTO>
+
+@{
+    ViewBag.Title = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mb-5 justify-content-center">
+    <div class="col-md-5 text-center">
+        <h2>Authors</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus commodi blanditiis, soluta magnam atque laborum ex qui recusandae</p>
+    </div>
+</div>
+
+<div class="row">
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var author in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-5 text-center">
+                <img src="@author.Image" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+                <a href="@author.Url" class="p-3"><h2 class="mb-3 h5">@author.Name</h2></a>
+                <p>@author.About</p>
+
+                <p class="mt-5">
+                    <a href="@author.FacebookUrl" class="p-3"><span class="icon-facebook"></span></a>
+                    <a href="@author.InstagramUrl" class="p-3"><span class="icon-instagram"></span></a>
+                    <a href="@author.TwitterUrl" class="p-3"><span class="icon-twitter"></span></a>
+                </p>
+            </div>
+        }
+    }
+
+</div>
+

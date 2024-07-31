@@ -72,6 +72,15 @@ namespace BlogRealm.Services
             return _unitOfWork.Blogs.OrderByDescendingByDate(firstRecentBlogOfEachCategory);
         }
 
+        public async Task<IEnumerable<Blog>> GetRecentBlogOfEachAuthorWithAuthorAndCategory()
+        {
+            var blogs = await _unitOfWork.Blogs.GetAllWithAuthorAndCategoryAsync();
+            var groupedBlogsByAuthor = _unitOfWork.Blogs.GroupByAuthorId(blogs);
+            var firstRecentBlogOfEachAuthor = _unitOfWork.Blogs.SelectFirstDescending(groupedBlogsByAuthor);
+
+            return _unitOfWork.Blogs.OrderByDescendingByDate(firstRecentBlogOfEachAuthor);
+        }
+
         public async Task<IEnumerable<Blog>> GetRecentBlogOfEachCategoryWithCategory()
         {
             var blogs = await _unitOfWork.Blogs.GetAllWithCategoryAsync();

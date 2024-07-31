@@ -1,0 +1,113 @@
+﻿@model BlogRealm.Web.DTO.ContactDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('/miniblog/images/img_4.jpg');">
+    <div class="container">
+        <div class="row same-height justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+                    <h1 class="">Contact Us</h1>
+                    <p class="lead mb-4 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, adipisci?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 mb-5">
+
+                @using (Html.BeginForm("Index", "Contact", FormMethod.Post, new { @id = "contactForm", @class = "p-5 bg-white" }))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            @Html.LabelFor(model => model.Name, "Full Name", new { @class = "text-black" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "fname", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Email, "Email", new { @class = "text-black" })
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "email", @type = "email", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Subject, "Subject", new { @class = "text-black" })
+                            @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", id = "subject", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Subject)
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Message, "Message", new { @class = "text-black" })
+                            @Html.TextAreaFor(model => model.Message, new { @class = "form-control", id = "message", cols = 30, rows = 7, placeholder = "Write your notes or questions here...", required = "required" })
+                            @Html.ValidationMessageFor(model => model.Message)
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Send Message" class="btn btn-primary py-2 px-4 text-white" />
+                        </div>
+                    </div>
+                }
+                <div id="contactResponseMessage" class="alert mt-3 d-none"></div>
+            </div>
+            <div class="col-md-5">
+
+                <div class="p-4 mb-3 bg-white">
+                    <p class="mb-0 font-weight-bold">Address</p>
+                    <p class="mb-4">203 Fake St. Mountain View, San Francisco, California, USA</p>
+
+                    <p class="mb-0 font-weight-bold">Phone</p>
+                    <p class="mb-4"><a href="#">+1 232 3235 324</a></p>
+
+                    <p class="mb-0 font-weight-bold">Email Address</p>
+                    <p class="mb-0"><a href="#">youremail@domain.com</a></p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#contactForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#contactResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    $('#contactForm')[0].reset()
+                },
+                error: function (xhr, status, error) {
+                    $('#contactResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>

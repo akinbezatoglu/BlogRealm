@@ -1,0 +1,177 @@
+﻿@model IEnumerable<BlogRealm.Web.Areas.Admin.DTO.BlogSmallAdminDTO>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    IEnumerable<BlogRealm.Web.Areas.Admin.DTO.AuthorSearchAdminDTO> Authors = ViewBag.Authors;
+    IEnumerable<BlogRealm.Web.Areas.Admin.DTO.CategorySearchAdminDTO> Categories = ViewBag.Categories;
+}
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    let refresh = false;
+    const authors = @Html.Raw(Json.Encode(Authors));
+    const categories = @Html.Raw(Json.Encode(Categories));
+
+    function filterAuthors() {
+        const input = document.getElementById('Author').value.toLowerCase();
+        const list = document.getElementById('authorList');
+
+        list.innerHTML = '';
+
+        if (input === '') {
+            return;
+        }
+
+        const filteredAuthors = authors.filter(author => author.Name.toLowerCase().includes(input));
+        filteredAuthors.forEach(author => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = author.Name;
+            listItem.onclick = function () {
+                document.getElementById('Author').value = author.Name;
+                document.getElementById('AuthorId').value = author.Id;
+                list.innerHTML = '';
+            };
+            list.appendChild(listItem);
+        });
+    }
+
+    function filterCategories() {
+        const input = document.getElementById('Category').value.toLowerCase();
+        const list = document.getElementById('categoryList');
+
+        list.innerHTML = '';
+
+        if (input === '') {
+            return;
+        }
+
+        const filteredCategories = categories.filter(category => category.Name.toLowerCase().includes(input));
+        filteredCategories.forEach(category => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = category.Name;
+            listItem.onclick = function () {
+                document.getElementById('Category').value = category.Name;
+                document.getElementById('CategoryId').value = category.Id;
+                list.innerHTML = '';
+            };
+            list.appendChild(listItem);
+        });
+    }
+
+    $(document).ready(function() {
+        $('body').on('click', '#addNewBlogBtn', function (e) {
+            e.preventDefault();
+
+            $("#createModalContainer").load("@Url.Action("Create", "Blog")", function () {
+                $("#blogModal").modal("show");
+            });
+        });
+
+        $('body').on('hidden.bs.modal', '#blogModal', function () {
+            $("#createModalContainer").empty();
+
+            if (refresh) {
+                location.reload();
+            }
+        });
+
+        $('body').on('click', '[id^=editBlogButton-]', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('id').split('-')[1];
+            var url = '@Url.Action("Update", "Blog")' + '/' + id;
+
+            $("#updateModalContainer").load(url, function () {
+                $("#updateBlogModal").modal("show");
+            });
+        });
+
+        $('body').on('hidden.bs.modal', '#updateBlogModal', function () {
+            $("#updateModalContainer").empty();
+
+            if (refresh) {
+                location.reload();
+            }
+        });
+
+        $('body').on('click', '[id^=deleteBlogButton-]', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('id').split('-')[1];
+            var url = '@Url.Action("Delete", "Blog")' + '/' + id;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#blogDeleteResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    if (response.success) {
+                        $(`tr[data-blog-id="${id}"]`).remove(); // Remove the blog row from the table
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#blogDeleteResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
+<h2>Blogs</h2>
+
+<div id="blogDeleteResponseMessage" class="alert mt-3 d-none"></div>
+
+<div class="h-100 align-items-center justify-content-center">
+    <div class="my-1 d-flex align-items-end justify-content-end">
+        <button id="addNewBlogBtn" class="btn btn-primary text-white" data-toggle="modal" data-target="#BlogModal" data-backdrop="static" data-keyboard="false">
+            <i class="fas fa-plus-circle mr-2"></i>Add a new Blog
+        </button>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var blog in Model)
+        {
+            <tr data-blog-id="@blog.Id">
+                <td>@blog.Id</td>
+                <td>@blog.Date.Date.ToString("MMMM dd, yyyy")</td>
+                <td><a href="@blog.Url" target="_blank" rel="noopener noreferrer">@blog.Title</a></td>
+                <td><a href="@blog.Category.Url" target="_blank" rel="noopener noreferrer">@blog.Category.Name</a></td>
+                <td><a href="@blog.Author.Url" target="_blank" rel="noopener noreferrer">@blog.Author.Name</a></td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cogs"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="@blog.Url" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i> View</a>
+                            <a class="dropdown-item" href="@blog.CommentUrl" target="_blank" rel="noopener noreferrer"><i class="fas fa-comment"></i> Comments</a>
+                            <button id="editBlogButton-@blog.Id" class="dropdown-item pb-2"><i class="fas fa-edit"></i> Edit</button>
+                            <button id="deleteBlogButton-@blog.Id" class="dropdown-item pt-2 border-top border-secondary text-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="createModalContainer"></div>
+<div id="updateModalContainer"></div>

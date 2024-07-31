@@ -20,6 +20,7 @@ namespace BlogRealm.Core.Services
 
         Task<IEnumerable<Blog>> GetRecentBlogsWithCategory();
         Task<IEnumerable<Blog>> GetRecentBlogsWithAuthorAndCategory();
+        Task<IEnumerable<Blog>> GetRecentBlogOfEachAuthorWithAuthorAndCategory();
         Task<IEnumerable<Blog>> GetRecentBlogOfEachCategoryWithCategory();
         Task<IEnumerable<Blog>> GetRecentBlogOfEachCategoryWithAuthorAndCategory();
 

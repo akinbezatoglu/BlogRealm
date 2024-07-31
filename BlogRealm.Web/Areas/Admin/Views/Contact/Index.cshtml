@@ -1,0 +1,76 @@
+﻿@model IEnumerable<BlogRealm.Web.Areas.Admin.DTO.ContactAdminDTO>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('body').on('click', '[id^=deleteContactButton-]', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('id').split('-')[1];
+            var url = '@Url.Action("Delete", "Contact")' + '/' + id;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#contactDeleteResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    if (response.success) {
+                        $(`tr[data-contact-id="${id}"]`).remove(); // Remove the contact row from the table
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#contactDeleteResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
+<h2>Contacts</h2>
+
+<div id="contactDeleteResponseMessage" class="alert mt-3 d-none"></div>
+
+<div class="h-100 align-items-center justify-content-center">
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var contact in Model)
+        {
+            <tr data-contact-id="@contact.Id">
+                <td>@contact.Id</td>
+                <td>@contact.Name</td>
+                <td class="meta" >@contact.Email</td>
+                <td>@contact.Subject</td>
+                <td>@contact.Message</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cogs"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button id="deleteContactButton-@contact.Id" class="dropdown-item pt-2 text-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

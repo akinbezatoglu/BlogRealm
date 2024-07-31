@@ -1,0 +1,54 @@
+﻿@model BlogRealm.Web.DTO.CommentDTO
+
+<h3 class="mb-5">Leave a comment</h3>
+
+@using (Html.BeginForm("Reply", "Comment", FormMethod.Post, new { @id = "replyForm", @class = "p-5 bg-light" }))
+{
+    @Html.AntiForgeryToken();
+
+    @Html.Hidden("BlogId", Model.BlogId);
+
+    <div class="form-group">
+        <label for="name">Name *</label>
+        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", id = "name", required = "required" })
+        @Html.ValidationMessageFor(m => m.Username)
+    </div>
+
+    <div class="form-group">
+        <label for="message">Message *</label>
+        @Html.TextAreaFor(m => m.Text, new { @class = "form-control", id = "message", cols = 30, rows = 10, required = "required" })
+        @Html.ValidationMessageFor(m => m.Text)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Post Comment" class="btn btn-primary">
+    </div>
+}
+
+<div id="replyResponseMessage" class="alert mt-3 d-none"></div>
+
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#replyForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#replyResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    $('#replyForm')[0].reset()
+                },
+                error: function (xhr, status, error) {
+                    $('#replyResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>

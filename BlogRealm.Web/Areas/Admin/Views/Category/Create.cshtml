@@ -1,0 +1,63 @@
+﻿@model BlogRealm.Web.Areas.Admin.DTO.CategoryPostAdminDTO
+
+<!-- Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">Add a New Category</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("Create", "Category", FormMethod.Post, new { @id = "categoryForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "Name", @type = "text", required = "required" })
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.About, "About")
+                        @Html.TextAreaFor(m => m.About, new { @class = "form-control", rows = "4", id = "About", @type = "text", required = "required" })
+                        @Html.ValidationMessageFor(m => m.About)
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                }
+
+                <div id="categoryModalResponseMessage" class="alert mt-3 d-none"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#categoryForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#categoryModalResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+
+                    $('#categoryForm')[0].reset()
+                    refresh = true;
+                },
+                error: function (xhr, status, error) {
+                    $('#categoryModalResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>

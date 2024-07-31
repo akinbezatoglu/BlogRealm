@@ -146,10 +146,58 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ScopedDependencyHttpModule.cs" />
     <Compile Include="App_Start\ScopedDependencyResolver.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AboutController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AuthorController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BlogController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CommentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ContactController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NewsletterController.cs" />
+    <Compile Include="Areas\Admin\DTO\AboutAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\AuthorAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\AuthorChartAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\AuthorPostAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\AuthorSearchAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\AuthorUpdateAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\BlogCommentsAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\BlogModalAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\BlogPostAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\BlogSmallAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\BlogUpdateAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CategoryAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CategoryChartAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CategoryPostAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CategoryUpdateAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CateogrySearchAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\CommentAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\ContactAdminDTO.cs" />
+    <Compile Include="Areas\Admin\DTO\NewsletterAdminDTO.cs" />
+    <Compile Include="Areas\AuthorRealm\AuthorRealmAreaRegistration.cs" />
+    <Compile Include="Areas\AuthorRealm\Controllers\AuthController.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\AuthorController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NewsletterController.cs" />
+    <Compile Include="DTO\AboutDTO.cs" />
+    <Compile Include="DTO\AboutFooterDTO.cs" />
+    <Compile Include="DTO\AuthorDTO.cs" />
+    <Compile Include="DTO\BlogDTO.cs" />
+    <Compile Include="DTO\BlogSmallDTO.cs" />
+    <Compile Include="DTO\CategoryDTO.cs" />
+    <Compile Include="DTO\CommentDTO.cs" />
+    <Compile Include="DTO\ContactDTO.cs" />
+    <Compile Include="DTO\NewsletterDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\MappingProfile.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +298,26 @@
     <Content Include="Content\fonts\icomoon\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon\fonts\icomoon.woff" />
     <Content Include="Content\fonts\icomoon\selection.json" />
+    <Content Include="Areas\Admin\Views\About\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Author\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Author\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Author\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Blog\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Blog\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Blog\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Comment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\OldIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Newsletter\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\AuthorRealm\Views\Auth\Login.cshtml" />
+    <Content Include="Areas\AuthorRealm\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\AuthorRealm\Views\web.config" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -271,15 +339,30 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\About\Footer.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\Author\All.cshtml" />
+    <Content Include="Views\Author\FeaturedAuthors.cshtml" />
+    <Content Include="Views\Author\Index.cshtml" />
+    <Content Include="Views\Blog\All.cshtml" />
+    <Content Include="Views\Blog\BlogList.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Blog\RecentBlogs.cshtml" />
+    <Content Include="Views\Blog\RecentBlogsByCategory.cshtml" />
+    <Content Include="Views\Category\All.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Category\Navbar.cshtml" />
+    <Content Include="Views\Comment\Reply.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Newsletter\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\AuthorRealm\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

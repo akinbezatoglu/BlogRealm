@@ -1,0 +1,106 @@
+﻿@model BlogRealm.Web.Areas.Admin.DTO.AboutAdminDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>About</h2>
+
+<div id="aboutResponseMessage" class="alert mt-3 d-none"></div>
+
+<div class="w-100 p-3">
+    @using (Html.BeginForm("Index", "About", FormMethod.Post, new { @id = "aboutForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MainContentTitle, "Main Content Title")
+            @Html.TextBoxFor(m => m.MainContentTitle, new { @class = "form-control font-weight-bold", id = "MainContentTitle", @type = "text", value = Model.MainContentTitle, required = "required" })
+            @Html.ValidationMessageFor(m => m.MainContentTitle)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.MainContentImage, "Main Content Image Path")
+            @Html.TextBoxFor(m => m.MainContentImage, new { @class = "form-control", id = "MainContentImagePath", @type = "text", value = Model.MainContentImage, required = "required" })
+            @Html.ValidationMessageFor(m => m.MainContentImage)
+        </div>
+        <img id="mainImage" src="@Model.MainContentImage" alt="Image" class="img-fluid" style="width: 25%;">
+        <div class="form-group">
+            @Html.LabelFor(m => m.MainContent, "Main Content")
+            @Html.TextAreaFor(m => m.MainContent, new { @class = "form-control", id = "MainContent", rows = "4", value = Model.MainContent, required = "required" })
+            @Html.ValidationMessageFor(m => m.MainContent)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstContentTitle, "First Content Title")
+            @Html.TextBoxFor(m => m.FirstContentTitle, new { @class = "form-control font-weight-bold", id = "FirstContentTitle", @type = "text", value = Model.FirstContentTitle, required = "required" })
+            @Html.ValidationMessageFor(m => m.FirstContentTitle)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstContentImage, "First Content Image Path")
+            @Html.TextBoxFor(m => m.FirstContentImage, new { @class = "form-control", id = "FirstContentImagePath", @type = "text", value = Model.FirstContentImage, required = "required" })
+            @Html.ValidationMessageFor(m => m.FirstContentImage)
+        </div>
+        <img id="firstImage" src="@Model.FirstContentImage" alt="Image" class="img-fluid" style="width: 25%;">
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstContent, "First Content")
+            @Html.TextAreaFor(m => m.FirstContent, new { @class = "form-control", id = "FirstContent", rows = "4", value = Model.FirstContent, required = "required" })
+            @Html.ValidationMessageFor(m => m.FirstContent)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.SecondContentTitle, "Second Content Title")
+            @Html.TextBoxFor(m => m.SecondContentTitle, new { @class = "form-control font-weight-bold", id = "SecondContentTitle", @type = "text", value = Model.SecondContentTitle, required = "required" })
+            @Html.ValidationMessageFor(m => m.SecondContentTitle)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SecondContentImage, "Second Content Image Path")
+            @Html.TextBoxFor(m => m.SecondContentImage, new { @class = "form-control", id = "SecondContentImagePath", @type = "text", value = Model.SecondContentImage, required = "required" })
+            @Html.ValidationMessageFor(m => m.SecondContentImage)
+        </div>
+        <img id="secondImage" src="@Model.SecondContentImage" alt="Image" class="img-fluid" style="width: 25%;">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SecondContent, "Second Content")
+            @Html.TextAreaFor(m => m.SecondContent, new { @class = "form-control", id = "SecondContent", rows = "4", value = Model.SecondContent, required = "required" })
+            @Html.ValidationMessageFor(m => m.SecondContent)
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#aboutForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $('#aboutResponseMessage').removeClass('alert-success alert-danger d-none').addClass(messageClass).text(response.message);
+                },
+                error: function (xhr, status, error) {
+                    $('#aboutResponseMessage').removeClass('alert-success d-none').addClass('alert-danger').text('An error occurred: ' + error);
+                }
+            });
+        });
+
+        $('#MainContentImagePath').on('input', function () {
+            var imageUrl = $(this).val();
+            $('#mainImage').attr('src', imageUrl);
+        });
+
+        $('#FirstContentImagePath').on('input', function () {
+            var imageUrl = $(this).val();
+            $('#firstImage').attr('src', imageUrl);
+        });
+
+        $('#SecondContentImagePath').on('input', function () {
+            var imageUrl = $(this).val();
+            $('#secondImage').attr('src', imageUrl);
+        });
+    });
+</script>
